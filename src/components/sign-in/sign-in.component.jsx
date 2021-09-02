@@ -18,11 +18,12 @@ class SignIn extends React.Component {
 
   handleSubmit = async event => {
     event.preventDefault();
-
+    //destructure of our state the email and password
     const { email, password } = this.state;
 
     try {
       await auth.signInWithEmailAndPassword(email, password);
+      //if that is a success, the state will be cleared
       this.setState({ email: '', password: ''});
     } catch (error) {
       console.log(error);
