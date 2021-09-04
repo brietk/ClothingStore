@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import './App.css';
 import HomePage from './pages/homepage/homepage.component';
@@ -8,6 +8,7 @@ import Header from './components/header/header.component';
 import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
 import { auth, createUserProfileDocument} from './firebase/firebase.utils';
 import { setCurrentUser} from './redux/user/user.actions';
+import userReducer from './redux/user/user.reducer';
 
 class App extends React.Component {
 
@@ -47,11 +48,23 @@ class App extends React.Component {
       <Switch>
         <Route exact path='/' component={HomePage} />
         <Route path='/shop' component={ShopPage} />
-        <Route path='/signIn' component={SignInAndSignUpPage} />
+        <Route exact path='/signIn' render={() => 
+          this.props.currentUser ? (
+            <Redirect to='/' />
+          ) : (
+            <SignInAndSignUpPage />
+          )
+          } 
+        />
       </Switch>
     </div>
   )};
 }
+
+//get current user from our redux state
+const mapStateToProps = ({ user }) => ({
+  currentUser: user.currentUser
+});
 
 const mapDispatchToProps = dispatch => ({
   //calling the acction, but passing the user in
@@ -60,4 +73,4 @@ const mapDispatchToProps = dispatch => ({
 
 //connects React component to Redux store.. 
 //first argument is null because we dont need any state/props from our reducer
-export default connect (null, mapDispatchToProps)(App);
+export default connect (mapStateToProps, mapDispatchToProps)(App);
