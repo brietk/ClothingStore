@@ -1,4 +1,4 @@
-import { UserActionTypes } from "./user.types";
+//import { UserActionTypes } from "./user.types";
 
 //functions that return objects 
 //a function that gets the user, but returns an action object.
