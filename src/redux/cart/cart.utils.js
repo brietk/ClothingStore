@@ -1,4 +1,7 @@
 //To prevent duplicates in cart.
+
+import cartReduser from "./cart.reducer";
+
 //Check if there are items in cartItemToAdd already in cartItems.
 export const addItemToCart = (cartItems, cartItemToAdd) => {
   //looks for existingItem
@@ -28,3 +31,20 @@ export const addItemToCart = (cartItems, cartItemToAdd) => {
   //cartItemToAdd exept we are going to give it a base quantity of 1. 
   return [...cartItems, { ...cartItemToAdd, quantity: 1 }]
 };
+
+export const removeItemFromCart = (cartItems, cartItemToRemove) => {
+  const existingCartItem = cartItems.find(
+    cartItem => cartItem.id === cartItemToRemove.id
+  )
+
+  if (existingCartItem.quantity === 1) {
+    return cartItems.filter(cartItem => cartItem.id !== cartItemToRemove.id)
+  }
+
+  return cartItems.map(
+    cartItem =>
+    cartItem.id === cartItemToRemove.id 
+    ? { ...cartItem, quantity: cartItem.quantity -1 }
+    : cartItem
+  );
+}
